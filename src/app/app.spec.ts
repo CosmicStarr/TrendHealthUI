@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
@@ -5,20 +7,20 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-    })
-      .compileComponents();
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it('should render title', async () => {
+  it('renders the heading, the form and the list, and loads the first page', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, TrendHealthUI');
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector('h1')?.textContent).toContain('Patient reminders');
+    expect(el.querySelector('app-reminder-form form')).toBeTruthy();
+    expect(el.querySelector('app-reminder-list table')).toBeTruthy();
+
+    const req = TestBed.inject(HttpTestingController).expectOne((r) => r.url === '/reminders');
+    expect(req.request.params.get('page')).toBe('1');
   });
 });
