@@ -13,8 +13,8 @@
       <label>
         Sort
         <select [value]="sort()" (change)="onSortChange($any($event.target).value)">
-          <option value="dueDate:asc">Due date (soonest first)</option>
-          <option value="dueDate:desc">Due date (latest first)</option>
+          <option value="dueDate:asc">Due Date (soonest first)</option>
+          <option value="dueDate:desc">Due Date (latest first)</option>
           <option value="createdAt:desc">Created (newest first)</option>
           <option value="createdAt:asc">Created (oldest first)</option>
         </select>
